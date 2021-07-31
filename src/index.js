@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
 const collectionDiv = document.querySelector("#toy-collection")
 const newToyForm = document.querySelector("body > div.container > form")
 
@@ -29,7 +28,6 @@ fetch('http://localhost:3000/toys')
         detCard.dataset.id = toyObj.id
       
       const detH2 = document.createElement('h2')
-        detH2.dataset.id = toyObj.id
         detH2.textContent = toyObj.name
 
       const detImg = document.createElement('img')
@@ -37,7 +35,7 @@ fetch('http://localhost:3000/toys')
         detImg.src = toyObj.image
   
       const detPTag = document.createElement('p')
-        detPTag.textContent = toyObj.likes
+        detPTag.textContent = `${toyObj.likes} Likes`
         detPTag.dataset.id = toyObj.id
 
       const detBttn = document.createElement('button')
@@ -54,6 +52,7 @@ newToyForm.addEventListener('submit', evt => {
     const name = evt.target.name.value
     const image = evt.target.image.value
     const likes = 0 
+
     const newToyObj = {name, image, likes}
 
     fetch('http://localhost:3000/toys', {
@@ -70,8 +69,8 @@ newToyForm.addEventListener('submit', evt => {
 
 collectionDiv.addEventListener('click', evt => {
     if(evt.target.matches('button.like-btn')){
-      let pTagDisplay = (evt.target.previousElementSibling)
-      let pTagNum = parseInt(pTagDisplay.textContent)
+      let pTag = (evt.target.previousElementSibling)
+      let pTagNum = parseInt(pTag.textContent)
       
       fetch(`http://localhost:3000/toys/${evt.target.dataset.id}`, {
         method: "PATCH",
@@ -83,8 +82,7 @@ collectionDiv.addEventListener('click', evt => {
       })
       .then(res => res.json())
       .then(toyObj => {
-        pTagDisplay.textContent = `${toyObj.likes} Likes`
+        pTag.textContent = `${toyObj.likes} Likes`
       })
-    
     }
 })
